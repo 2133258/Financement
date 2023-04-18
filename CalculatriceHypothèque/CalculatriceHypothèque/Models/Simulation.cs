@@ -45,7 +45,8 @@ namespace CalculatriceHypothèque.Models
         public void GenererResultat()
         {
             SetMensualite();
-            Resultat.Balance = Capital;
+            Resultats.Clear();
+            Resultat.TrackBalance = Capital;
             Resultat.NbMois = 0;
             for (int i = 1; i <= Periode; i++)
             {
@@ -60,17 +61,22 @@ namespace CalculatriceHypothèque.Models
 
         private double? GetMontantInteretMensuelle()
         {
-            return (GetTauxPeriode() * Resultat.Balance);
+            return (GetTauxPeriode() * Resultat.TrackBalance);
         }
 
         private void SetMensualite()
         {
-            Mensualite = Capital * GetTauxPeriode() / (1 - Math.Pow(1 + (double)GetTauxPeriode(), -1 * (double)Periode));
+            Mensualite = Capital * GetTauxPeriode() / (1 - Math.Pow(1 + (double)GetTauxPeriode(), -1 * (double)GetNbPaiementTotal()));
         }
 
         private double? GetTauxPeriode()
         {
             return TauxAnnuel / Frequence.NbPaimentAnnuel / 100;
+        }
+
+        private double? GetNbPaiementTotal()
+        {
+            return Periode / 12 * Frequence.NbPaimentAnnuel;
         }
     }
 }

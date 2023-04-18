@@ -121,8 +121,8 @@ namespace CalculatriceHypothèque.ViewModels
             get { return _frequenceEnregistrer; }
             set
             {
-                ValeurChangee("Frequence");
                 _frequenceEnregistrer = value; 
+                ValeurChangee("Frequence");
             }
         }
 
@@ -131,8 +131,8 @@ namespace CalculatriceHypothèque.ViewModels
             get { return new List<Frequence>(_listeFrequence); }
             set
             {
+                _listeFrequence = value;
                 ValeurChangee("ListeFrequence");
-                _listeFrequence = value; 
             }
         }
 
@@ -141,8 +141,8 @@ namespace CalculatriceHypothèque.ViewModels
             get { return _simulationEnregistrer; }
             set
             {
-                ValeurChangee("Simulation");
                 _simulationEnregistrer = value; 
+                ValeurChangee("Simulation");
             }
         }
 
@@ -154,7 +154,6 @@ namespace CalculatriceHypothèque.ViewModels
                 _simulationSelectionner = value; 
                 ValeurChangee("SimulationSelectionner");
                 SetInformation(value);
-                SetResultat(value);
             }
         }
 
@@ -168,13 +167,13 @@ namespace CalculatriceHypothèque.ViewModels
             }
         }
 
-        public List<Resultat> Resultat
+        public List<Resultat> Resultats
         {
             get { return new List<Resultat>(_resultats); }
             set
             {
-                ValeurChangee("Resultat");
                 _resultats = value; 
+                ValeurChangee("Resultats");
             }
         }
 
@@ -340,8 +339,8 @@ namespace CalculatriceHypothèque.ViewModels
         {
             _listeSimulation = new List<Simulation>();
             _listeFrequence = new List<Frequence>();
+            _resultats = new List<Resultat>();
             SetFrequence();
-            _moisRadioButtonState = true;
             
             _listeSimulation.Add(new Simulation("Savard", "William", "B", 230000, 6.5, 300, _listeFrequence[0]));
             _listeSimulation.Add(new Simulation("Lavoie", "Xavier", "A", 230000, 6.5, 300, _listeFrequence[0]));
@@ -405,6 +404,7 @@ namespace CalculatriceHypothèque.ViewModels
             }
             else
             {
+                _totalInteret = 0;  
                 _resultats = value.Resultats;
                 _totalCapital = value.Capital;
                 for (int i = 0; i < value.Resultats.Count; i++)

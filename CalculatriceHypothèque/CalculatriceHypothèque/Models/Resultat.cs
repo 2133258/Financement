@@ -14,7 +14,8 @@ namespace CalculatriceHypothèque.Models
         public double? Paiement { get; set; }
         public double? Capital { get; set; }
         public double? Interet { get; set; }
-        public static double? Balance { get; set; }
+        public static double? TrackBalance { get; set; }
+        public double? Balance { get; set; }
 
         public Resultat() { }
 
@@ -25,7 +26,8 @@ namespace CalculatriceHypothèque.Models
             Paiement = paiement;
             Capital = capital;
             Interet = interet;
-            Balance = Balance - capital;
+            TrackBalance = TrackBalance - capital;
+            Balance = (double)Math.Abs((decimal)TrackBalance);
         }
     }
 }

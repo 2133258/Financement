@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CalculatriceHypothèque.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace CalculatriceHypothèque.View
 {
@@ -24,10 +25,25 @@ namespace CalculatriceHypothèque.View
     /// </summary>
     public partial class GestionSimulation : Window
     {
+        private bool verifChangeRadioButton { get; set; }
+
         public GestionSimulation()
         {
             InitializeComponent();
             this.DataContext = new VMGestionSimulation();
+            verifChangeRadioButton = true;
+
+            NomTextbox.IsEnabled = false;
+            PrenomTextbox.IsEnabled = false;
+            DescriptionTextbox.IsEnabled = false;
+            CapitalTextBox.IsEnabled = false;
+            TauxAnnuelTextbox.IsEnabled = false;
+            PeriodeTextBox.IsEnabled = false;
+            FrequenceComboBox.IsEnabled = false;
+            AnneeRadioButton.IsChecked = false;
+            MoisRadioButton.IsChecked = false;
+            AnneeRadioButton.IsEnabled = false;
+            MoisRadioButton.IsEnabled = false;
         }
 
         #region Commande SortItem
@@ -65,7 +81,7 @@ namespace CalculatriceHypothèque.View
                     var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
                     var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
 
-                    Sort(sortBy, direction);
+                    Sort(sortBy, direction, sender);
 
                     if (direction == ListSortDirection.Ascending)
                     {
@@ -90,10 +106,11 @@ namespace CalculatriceHypothèque.View
             }
         }
 
-        private void Sort(string sortBy, ListSortDirection direction)
+        private void Sort(string sortBy, ListSortDirection direction, object sender)
         {
+             ListView listview = sender as ListView;
             ICollectionView dataView =
-              CollectionViewSource.GetDefaultView(ListViewSimulation.ItemsSource);
+              CollectionViewSource.GetDefaultView(listview.ItemsSource);
 
             dataView.SortDescriptions.Clear();
             SortDescription sd = new SortDescription(sortBy, direction);
@@ -206,13 +223,80 @@ namespace CalculatriceHypothèque.View
 
         private void ListViewSimulation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Simulation simul = ListViewSimulation.SelectedItem as Simulation;
-            if (simul is not null) 
-            if (simul.Frequence is not null)
-            ComboBoxFrequence.SelectedIndex = simul.Frequence.Id - 1;
+            if (ListViewSimulation.SelectedItem is not null)
+            {
+                NomTextbox.IsEnabled = true;
+                PrenomTextbox.IsEnabled = true;
+                DescriptionTextbox.IsEnabled = true;
+                CapitalTextBox.IsEnabled = true;
+                TauxAnnuelTextbox.IsEnabled = true;
+                PeriodeTextBox.IsEnabled = true;
+                FrequenceComboBox.IsEnabled = true;
+                AnneeRadioButton.IsChecked = false;
+                MoisRadioButton.IsChecked = false;
+                AnneeRadioButton.IsEnabled = true;
+                MoisRadioButton.IsEnabled = true;
 
-            MoisRadioButton.IsChecked = true;
+                Simulation simul = ListViewSimulation.SelectedItem as Simulation;
+                if (simul.Frequence is not null)
+                    FrequenceComboBox.SelectedIndex = simul.Frequence.Id - 1;
+
+                verifChangeRadioButton = false;
+                AnneeRadioButton.IsChecked = true;
+                verifChangeRadioButton = false;
+                MoisRadioButton.IsChecked = true;
+            }
+            else
+            {
+                NomTextbox.IsEnabled = false;
+                PrenomTextbox.IsEnabled = false;
+                DescriptionTextbox.IsEnabled = false;
+                CapitalTextBox.IsEnabled = false;
+                TauxAnnuelTextbox.IsEnabled = false;
+                PeriodeTextBox.IsEnabled = false;
+                FrequenceComboBox.IsEnabled = false;
+                AnneeRadioButton.IsChecked = false;
+                MoisRadioButton.IsChecked = false;
+                AnneeRadioButton.IsEnabled = false;
+                MoisRadioButton.IsEnabled = false;
+            }
         }
 
+        private void TextBoxNomPrenom_TextOnly(object sender, TextCompositionEventArgs e)
+        {
+            if (!Regex.IsMatch(e.Text, "^[a-zA-Z]+$") || ((TextBox)sender).Text.Length >= 20)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TextBoxPeriode_NumberOnly(object sender, TextCompositionEventArgs e)
+        {
+            if (!Regex.IsMatch(e.Text, "^[0-9,]+$") || ((TextBox)sender).Text.Length >= 8)
+            {
+                e.Handled = true;
+
+            }
+        }
+
+        private void MoisRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PeriodeTextBox.Text != "" && PeriodeTextBox.Text is not null && verifChangeRadioButton)
+            {
+                PeriodeTextBox.Text = (Convert.ToDouble(PeriodeTextBox.Text)*12).ToString();
+            }
+            verifChangeRadioButton = true;
+        }
+
+        private void AnneeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PeriodeTextBox.Text != "" && PeriodeTextBox.Text is not null && verifChangeRadioButton)
+            {
+                PeriodeTextBox.Text = (Convert.ToDouble(PeriodeTextBox.Text)/12).ToString();
+            }
+            verifChangeRadioButton = true;
+        }
+
+        
     }
 }
