@@ -1,5 +1,4 @@
-﻿using CalculatriceHypothèque.Models;
-using CalculatriceHypothèque.ViewModels;
+﻿using CalculatriceHypothèque.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,59 +14,36 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using CalculatriceHypothèque.ViewModels;
-using System.Text.RegularExpressions;
 
 namespace CalculatriceHypothèque.View
 {
     /// <summary>
-    /// Logique d'interaction pour GestionSimulation.xaml
+    /// Interaction logic for ListeResultat.xaml
     /// </summary>
-    public partial class GestionSimulation : Window
+    public partial class ListeResultat : Window
     {
-        private bool verifChangeRadioButton { get; set; }
-        private bool verifWindowSize { get; set; }
-
-        public GestionSimulation()
+        public ListeResultat()
         {
             InitializeComponent();
-            this.DataContext = new VMGestionSimulation();
-            verifChangeRadioButton = false;
-            verifWindowSize = true;
-
-            NomTextbox.IsEnabled = false;
-            PrenomTextbox.IsEnabled = false;
-            DescriptionTextbox.IsEnabled = false;
-            CapitalTextBox.IsEnabled = false;
-            TauxAnnuelTextbox.IsEnabled = false;
-            PeriodeTextBox.IsEnabled = false;
-            FrequenceComboBox.IsEnabled = false;
-            AnneeRadioButton.IsChecked = false;
-            MoisRadioButton.IsChecked = false;
-            AnneeRadioButton.IsEnabled = false;
-            MoisRadioButton.IsEnabled = false;
-
-            Closing += ((VMGestionSimulation)DataContext).OnWindowClosing;
-
         }
 
-  
-
-        private void ContentGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ProductsListView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var viewModel = (VMGestionSimulation)DataContext;
-            if (verifWindowSize && viewModel.ContentWidth != e.NewSize.Width + 13)
-            {
-                double widthWindow = e.NewSize.Width;
-                widthWindow += 15;
-                viewModel.ContentWidth = widthWindow;
-                verifWindowSize = false;
-            }
-            else
-            {
-                verifWindowSize = true;
-            }
-            
+            ListView listView = sender as ListView;
+            GridView gView = listView.View as GridView;
+
+            var workingWidth = listView.ActualWidth - SystemParameters.VerticalScrollBarWidth - 9; // take into account vertical scrollbar
+            var col1 = 0.20;
+            var col2 = 0.20;
+            var col3 = 0.20;
+            var col4 = 0.20;
+            var col5 = 0.20;
+
+            gView.Columns[0].Width = workingWidth * col1;
+            gView.Columns[1].Width = workingWidth * col2;
+            gView.Columns[2].Width = workingWidth * col3;
+            gView.Columns[3].Width = workingWidth * col4;
+            gView.Columns[4].Width = workingWidth * col5;
         }
 
         #region Commande SortItem
@@ -132,7 +108,7 @@ namespace CalculatriceHypothèque.View
 
         private void Sort(string sortBy, ListSortDirection direction, object sender)
         {
-             ListView listview = sender as ListView;
+            ListView listview = sender as ListView;
             ICollectionView dataView =
               CollectionViewSource.GetDefaultView(listview.ItemsSource);
 
@@ -244,84 +220,5 @@ namespace CalculatriceHypothèque.View
         }
 
         #endregion ListView UpdateColumnsWidth
-
-        private void ListViewSimulation_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ListViewSimulation.SelectedItem is not null)
-            {
-                NomTextbox.IsEnabled = true;
-                PrenomTextbox.IsEnabled = true;
-                DescriptionTextbox.IsEnabled = true;
-                CapitalTextBox.IsEnabled = true;
-                TauxAnnuelTextbox.IsEnabled = true;
-                PeriodeTextBox.IsEnabled = true;
-                FrequenceComboBox.IsEnabled = true;
-                AnneeRadioButton.IsChecked = false;
-                MoisRadioButton.IsChecked = false;
-                AnneeRadioButton.IsEnabled = true;
-                MoisRadioButton.IsEnabled = true;
-
-                Simulation simul = ListViewSimulation.SelectedItem as Simulation;
-                if (simul.Frequence is not null)
-                    FrequenceComboBox.SelectedIndex = simul.Frequence.Id - 1;
-
-                verifChangeRadioButton = false;
-                AnneeRadioButton.IsChecked = true;
-                verifChangeRadioButton = false;
-                MoisRadioButton.IsChecked = true;
-                verifWindowSize = true;
-            }
-            else
-            {
-                NomTextbox.IsEnabled = false;
-                PrenomTextbox.IsEnabled = false;
-                DescriptionTextbox.IsEnabled = false;
-                CapitalTextBox.IsEnabled = false;
-                TauxAnnuelTextbox.IsEnabled = false;
-                PeriodeTextBox.IsEnabled = false;
-                FrequenceComboBox.IsEnabled = false;
-                AnneeRadioButton.IsChecked = false;
-                MoisRadioButton.IsChecked = false;
-                AnneeRadioButton.IsEnabled = false;
-                MoisRadioButton.IsEnabled = false;
-            }
-        }
-
-        private void TextBoxNomPrenom_TextOnly(object sender, TextCompositionEventArgs e)
-        {
-            if (!Regex.IsMatch(e.Text, "^[a-zA-Z]+$") || ((TextBox)sender).Text.Length >= 20)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void TextBoxPeriode_NumberOnly(object sender, TextCompositionEventArgs e)
-        {
-            if (!Regex.IsMatch(e.Text, "^[0-9,]+$") || ((TextBox)sender).Text.Length >= 8)
-            {
-                e.Handled = true;
-
-            }
-        }
-
-        private void MoisRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (PeriodeTextBox.Text != "" && PeriodeTextBox.Text is not null && verifChangeRadioButton)
-            {
-                PeriodeTextBox.Text = (Convert.ToDouble(PeriodeTextBox.Text)*12).ToString();
-            }
-            verifChangeRadioButton = true;
-        }
-
-        private void AnneeRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (PeriodeTextBox.Text != "" && PeriodeTextBox.Text is not null && verifChangeRadioButton)
-            {
-                PeriodeTextBox.Text = (Convert.ToDouble(PeriodeTextBox.Text)/12).ToString();
-            }
-            verifChangeRadioButton = true;
-        }
-
-        
     }
 }

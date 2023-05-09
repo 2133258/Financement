@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.Serialization;
+using System.Xml;
 using CalculatriceHypothèque.Models;
+using CalculatriceHypothèque.View;
+using System.Drawing;
 
 namespace CalculatriceHypothèque.ViewModels
 {
@@ -24,13 +29,19 @@ namespace CalculatriceHypothèque.ViewModels
         private List<Resultat> _resultats;
         private bool _moisRadioButtonState, _anneeRadioButtonState;
 
+
         public string? Nom
         {
             get { return _nomEnregistrer; }
             set 
             {
                 ValeurChangee("Nom");
-                _nomEnregistrer = value; 
+                _nomEnregistrer = value;
+                if (_nomEnregistrer is null || _nomEnregistrer == "")
+                    _nomBorderValidation = "Red";
+                else
+                    _nomBorderValidation = "Gray";
+                ValeurChangee("NomBorderValidation");
             }
         }
 
@@ -40,7 +51,12 @@ namespace CalculatriceHypothèque.ViewModels
             set
             {
                 ValeurChangee("Prenom");
-                _prenomEnregistrer = value; 
+                _prenomEnregistrer = value;
+                if (_prenomEnregistrer is null || _prenomEnregistrer == "")
+                    _prenomBorderValidation = "Red";
+                else
+                    _prenomBorderValidation = "Gray";
+                ValeurChangee("PrenomBorderValidation");
             }
         }
 
@@ -50,7 +66,12 @@ namespace CalculatriceHypothèque.ViewModels
             set
             {
                 ValeurChangee("Description");
-                _descriptionEnregistrer = value; 
+                _descriptionEnregistrer = value;
+                if (_descriptionEnregistrer is null || _descriptionEnregistrer == "")
+                    _descriptionBorderValidation = "Red";
+                else
+                    _descriptionBorderValidation = "Gray";
+                ValeurChangee("DescriptionBorderValidation");
             }
         }
 
@@ -60,7 +81,12 @@ namespace CalculatriceHypothèque.ViewModels
             set
             {
                 ValeurChangee("MontantCapital");
-                _totalCapitalEnregistrer = value; 
+                _totalCapitalEnregistrer = value;
+                if (_totalCapitalEnregistrer is null || _totalCapitalEnregistrer <= 0)
+                    _capitalBorderValidation = "Red";
+                else
+                    _capitalBorderValidation = "Gray";
+                ValeurChangee("CapitalBorderValidation");
             }
         }
 
@@ -80,7 +106,12 @@ namespace CalculatriceHypothèque.ViewModels
             set 
             {
                 ValeurChangee("TauxAnnuel");
-                _tauxAnnuelEnregistrer = value; 
+                _tauxAnnuelEnregistrer = value;
+                if (_tauxAnnuelEnregistrer is null)
+                    _tauxAnnuelBorderValidation = "Red";
+                else
+                    _tauxAnnuelBorderValidation = "Gray";
+                ValeurChangee("TauxAnnuelBorderValidation");
             }
         }
 
@@ -113,6 +144,11 @@ namespace CalculatriceHypothèque.ViewModels
                 if (AnneeRadioButtonState)
                 _periodeEnregistrer = value * 12;
                 else _periodeEnregistrer = value;
+                if (_periodeEnregistrer is null || _periodeEnregistrer <= 0)
+                    _periodeBorderValidation = "Red";
+                else
+                    _periodeBorderValidation = "Gray";
+                ValeurChangee("PeriodeBorderValidation");
             }
         }
 
@@ -121,8 +157,13 @@ namespace CalculatriceHypothèque.ViewModels
             get { return _frequenceEnregistrer; }
             set
             {
-                _frequenceEnregistrer = value; 
+                _frequenceEnregistrer = value;
                 ValeurChangee("Frequence");
+                if (_frequenceEnregistrer is null)
+                    _frequenceBorderValidation = "Red";
+                else
+                    _frequenceBorderValidation = "Gray";
+                ValeurChangee("FrequenceBorderValidation");
             }
         }
 
@@ -154,6 +195,7 @@ namespace CalculatriceHypothèque.ViewModels
                 _simulationSelectionner = value; 
                 ValeurChangee("SimulationSelectionner");
                 SetInformation(value);
+                SetBorders();
             }
         }
 
@@ -196,6 +238,98 @@ namespace CalculatriceHypothèque.ViewModels
                 _anneeRadioButtonState = value;
             }
         }
+
+        private double _contentWidth;
+        public double ContentWidth
+        {
+            get { return _contentWidth; }
+            set
+            {
+                _contentWidth = value;
+                ValeurChangee("ContentWidth");
+            }
+        }
+
+        #region CouleurValidation
+
+        private string _nomBorderValidation;
+        public string NomBorderValidation
+        {
+            get { return _nomBorderValidation; }
+            set
+            {
+                _nomBorderValidation = value;
+                ValeurChangee("NomBorderValidation");
+            }
+        }
+
+        private string _prenomBorderValidation;
+        public string PrenomBorderValidation
+        {
+            get { return _prenomBorderValidation; }
+            set
+            {
+                _prenomBorderValidation = value;
+                ValeurChangee("PrenomBorderValidation");
+            }
+        }
+
+        private string _descriptionBorderValidation;
+        public string DescriptionBorderValidation
+        {
+            get { return _descriptionBorderValidation; }
+            set
+            {
+                _descriptionBorderValidation = value;
+                ValeurChangee("DescriptionBorderValidation");
+            }
+        }
+
+        private string _capitalBorderValidation;
+        public string CapitalBorderValidation
+        {
+            get { return _capitalBorderValidation; }
+            set
+            {
+                _capitalBorderValidation = value;
+                ValeurChangee("CapitalBorderValidation");
+            }
+        }
+
+        private string _tauxAnnuelBorderValidation;
+        public string TauxAnnuelBorderValidation
+        {
+            get { return _tauxAnnuelBorderValidation; }
+            set
+            {
+                _tauxAnnuelBorderValidation = value;
+                ValeurChangee("TauxAnnuelBorderValidation");
+            }
+        }
+
+        private string _periodeBorderValidation;
+        public string PeriodeBorderValidation
+        {
+            get { return _periodeBorderValidation; }
+            set
+            {
+                _periodeBorderValidation = value;
+                ValeurChangee("PeriodeBorderValidation");
+            }
+        }
+
+        private string _frequenceBorderValidation;
+        public string FrequenceBorderValidation
+        {
+            get { return _frequenceBorderValidation; }
+            set
+            {
+                _frequenceBorderValidation = value;
+                ValeurChangee("FrequenceBorderValidation");
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -277,21 +411,55 @@ namespace CalculatriceHypothèque.ViewModels
 
         private void EnregistrerSimulation_Execute(object parSelect)
         {
-            _simulationSelectionner.Nom = _nomEnregistrer;
-            _simulationSelectionner.Prenom = _prenomEnregistrer;
-            _simulationSelectionner.Description = _descriptionEnregistrer;
-            _simulationSelectionner.Capital = _totalCapitalEnregistrer;
-            _simulationSelectionner.Frequence = _frequenceEnregistrer;
-            _simulationSelectionner.Periode = _periodeEnregistrer;
-            _simulationSelectionner.TauxAnnuel = _tauxAnnuelEnregistrer;
+            if (_nomEnregistrer is not null && _nomEnregistrer != ""
+                && _prenomEnregistrer is not null && _prenomEnregistrer != ""
+                && _descriptionEnregistrer is not null && _descriptionEnregistrer != ""
+                && _totalCapitalEnregistrer is not null && _totalCapitalEnregistrer > 0
+                && _tauxAnnuelEnregistrer is not null
+                && _periodeEnregistrer is not null && _periodeEnregistrer > 0
+                && _frequenceEnregistrer is not null)
+            {
+                SetBorders();
+                _simulationSelectionner.Nom = _nomEnregistrer;
+                _simulationSelectionner.Prenom = _prenomEnregistrer;
+                _simulationSelectionner.Description = _descriptionEnregistrer;
+                _simulationSelectionner.Capital = _totalCapitalEnregistrer;
+                _simulationSelectionner.Frequence = _frequenceEnregistrer;
+                _simulationSelectionner.Periode = _periodeEnregistrer;
+                _simulationSelectionner.TauxAnnuel = _tauxAnnuelEnregistrer;
 
-            ValeurChangee("SimulationSelectionner");
-            ValeurChangee("ListeSimulation");
+                ValeurChangee("SimulationSelectionner");
+                ValeurChangee("ListeSimulation");
+            }
+            else
+            {
+                if (_nomEnregistrer is null || _nomEnregistrer == "")
+                    _nomBorderValidation = "Red";
+                if (_prenomEnregistrer is null || _prenomEnregistrer == "")
+                    _prenomBorderValidation = "Red";
+                if (_descriptionEnregistrer is null || _descriptionEnregistrer == "")
+                    _descriptionBorderValidation = "Red";
+                if (_totalCapitalEnregistrer is null || _totalCapitalEnregistrer <= 0)
+                    _capitalBorderValidation = "Red";
+                if (_tauxAnnuelEnregistrer is null)
+                    _tauxAnnuelBorderValidation = "Red";
+                if (_periodeEnregistrer is null || _periodeEnregistrer <= 0)
+                    _periodeBorderValidation = "Red";
+                if (_frequenceEnregistrer is null)
+                    _frequenceBorderValidation = "Red";
+                ValeurChangee("NomBorderValidation");
+                ValeurChangee("PrenomBorderValidation");
+                ValeurChangee("DescriptionBorderValidation");
+                ValeurChangee("CapitalBorderValidation");
+                ValeurChangee("TauxAnnuelBorderValidation");
+                ValeurChangee("PeriodeBorderValidation");
+                ValeurChangee("FrequenceBorderValidation");
+            }
         }
 
         private bool EnregistrerSimulation_CanExecute(object param)
         {
-            if (_nomEnregistrer is null || _prenomEnregistrer is null || _descriptionEnregistrer is null || _totalCapitalEnregistrer is null || _tauxAnnuelEnregistrer is null || _periodeEnregistrer is null || _frequenceEnregistrer is null)
+            if (_simulationSelectionner is null)
             {
                 return false;
             }
@@ -308,13 +476,52 @@ namespace CalculatriceHypothèque.ViewModels
 
         private void CalculerSimulation_Execute(object parSelect)
         {
-            _simulationSelectionner.GenererResultat();
-            SetResultat(_simulationSelectionner);
+            if (_nomEnregistrer is not null && _nomEnregistrer != ""
+                && _prenomEnregistrer is not null && _prenomEnregistrer != ""
+                && _descriptionEnregistrer is not null && _descriptionEnregistrer != ""
+                && _totalCapitalEnregistrer is not null && _totalCapitalEnregistrer > 0
+                && _tauxAnnuelEnregistrer is not null
+                && _periodeEnregistrer is not null && _periodeEnregistrer > 0
+                && _frequenceEnregistrer is not null)
+            {
+                SetBorders();
+                EnregistrerSimulation_Execute(parSelect);
+                _simulationSelectionner.GenererResultat();
+                SetResultat(_simulationSelectionner);
+                ListeResultat view = new ListeResultat();
+                view.DataContext = this;
+                view.ShowDialog();
+                return;
+            }
+            else
+            {
+                if (_nomEnregistrer is null || _nomEnregistrer == "")
+                    _nomBorderValidation = "Red";
+                if (_prenomEnregistrer is null || _prenomEnregistrer == "")
+                    _prenomBorderValidation = "Red";
+                if (_descriptionEnregistrer is null || _descriptionEnregistrer == "")
+                    _descriptionBorderValidation = "Red";
+                if (_totalCapitalEnregistrer is null || _totalCapitalEnregistrer <= 0)
+                    _capitalBorderValidation = "Red";
+                if (_tauxAnnuelEnregistrer is null)
+                    _tauxAnnuelBorderValidation = "Red";
+                if (_periodeEnregistrer is null || _periodeEnregistrer <= 0)
+                    _periodeBorderValidation = "Red";
+                if (_frequenceEnregistrer is null)
+                    _frequenceBorderValidation = "Red";
+                ValeurChangee("NomBorderValidation");
+                ValeurChangee("PrenomBorderValidation");
+                ValeurChangee("DescriptionBorderValidation");
+                ValeurChangee("CapitalBorderValidation");
+                ValeurChangee("TauxAnnuelBorderValidation");
+                ValeurChangee("PeriodeBorderValidation");
+                ValeurChangee("FrequenceBorderValidation");
+            }
         }
 
         private bool CalculerSimulation_CanExecute(object param)
         {
-            if (_nomEnregistrer is null || _prenomEnregistrer is null || _descriptionEnregistrer is null || _totalCapitalEnregistrer is null || _tauxAnnuelEnregistrer is null || _periodeEnregistrer is null || _frequenceEnregistrer is null)
+            if (_simulationSelectionner is null)
             {
                 return false;
             }
@@ -322,6 +529,45 @@ namespace CalculatriceHypothèque.ViewModels
         }
 
         #endregion
+
+        #region Serialize
+
+        private void SerialiserSimulations()
+        {
+            System.Xml.Serialization.XmlSerializer mySerialiser = new System.Xml.Serialization.XmlSerializer(_listeSimulation.GetType());
+            XmlWriter writer = XmlWriter.Create("Simulations.xml");
+            mySerialiser.Serialize(writer, _listeSimulation);
+            writer.Close();
+        }
+
+        private void DeserialiserSimulations()
+        {
+            XmlSerializer ser = null;
+            XmlReader reader = null;
+            try
+            {
+                ser = new XmlSerializer(typeof(List<Simulation>));
+                reader = XmlReader.Create("Simulations.xml");
+                _listeSimulation = (List<Simulation>)ser.Deserialize(reader);
+                ValeurChangee("listeSimulation");
+            }
+            catch (FileNotFoundException)
+            {
+                _listeSimulation = new List<Simulation>();
+            }
+            catch (System.InvalidOperationException e)
+            {
+                throw (e);
+                //Ouvrire la page d'erreur
+                //écrire : Fichier Corompu : e.message
+            }
+            finally
+            {
+                reader?.Close();
+            }
+        }
+
+        #endregion Serialize
 
         #region Notification
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -340,10 +586,9 @@ namespace CalculatriceHypothèque.ViewModels
             _listeSimulation = new List<Simulation>();
             _listeFrequence = new List<Frequence>();
             _resultats = new List<Resultat>();
+            DeserialiserSimulations();
             SetFrequence();
-            
-            _listeSimulation.Add(new Simulation("Savard", "William", "B", 230000, 6.5, 300, _listeFrequence[0]));
-            _listeSimulation.Add(new Simulation("Lavoie", "Xavier", "A", 230000, 6.5, 300, _listeFrequence[0]));
+            SetBorders();
 
             this._AjouterSimulation = new CommandeRelais(AjouterSimulation_Execute, AjouterSimulation_CanExecute);
             this._SupprimerSimulation = new CommandeRelais(SupprimerSimulation_Execute, SupprimerSimulation_CanExecute);
@@ -352,6 +597,29 @@ namespace CalculatriceHypothèque.ViewModels
         }
 
         #region FonctionAide
+
+        private void SetBorders()
+        {
+            _nomBorderValidation = "Gray";
+            _prenomBorderValidation = "Gray";
+            _descriptionBorderValidation = "Gray";
+            _capitalBorderValidation = "Gray";
+            _tauxAnnuelBorderValidation = "Gray";
+            _periodeBorderValidation = "Gray";
+            _frequenceBorderValidation = "Gray";
+            ValeurChangee("NomBorderValidation");
+            ValeurChangee("PrenomBorderValidation");
+            ValeurChangee("DescriptionBorderValidation");
+            ValeurChangee("CapitalBorderValidation");
+            ValeurChangee("TauxAnnuelBorderValidation");
+            ValeurChangee("PeriodeBorderValidation");
+            ValeurChangee("FrequenceBorderValidation");
+        }
+
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            SerialiserSimulations();
+        }
 
         private void SetFrequence()
         {

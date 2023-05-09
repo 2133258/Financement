@@ -1,0 +1,110 @@
+﻿<Window x:Class="CalculatriceHypothèque.View.ListeResultat"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalculatriceHypothèque.View"
+        mc:Ignorable="d"
+        Title="ListeResultat" MinHeight="400" Height="450" MinWidth="550" Width="600">
+    <Grid>
+        <GroupBox Header="Resultats" BorderBrush="Gray" Margin="5,5,5,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Margin="10,15" Height="25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Total Capital :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
+                    <TextBlock Text="{Binding TotalCapital, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                </Grid>
+                <Grid Grid.Row="2" Margin="10,15" Height="25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Total Intérêt :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
+                    <TextBlock Text="{Binding TotalInteret, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                </Grid>
+                <Grid Grid.Row="3" Margin="10,15" Height="25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Coût Total :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
+                    <TextBlock Text="{Binding MontantTotal, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                </Grid>
+                <ListView x:Name="ListViewResultat" 
+                          ItemsSource="{Binding Resultats,NotifyOnTargetUpdated=True}" 
+                          TargetUpdated="ListViewTargetUpdated" 
+                          GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" 
+                          Grid.Row="4" Margin="5" Background="Transparent" 
+                          BorderThickness="2" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          SizeChanged="ProductsListView_SizeChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="Gray" />
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="BorderBrush" Value="Gray" />
+                                    <Setter Property="Background" Value="LightGreen" />
+                                </Trigger>
+                            </Style.Triggers>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="BorderBrush" Value="LightGray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                <Grid>
+                                                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                    </Border>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridView.Columns>
+                                <GridViewColumn x:Name="columnMois" Header="{Binding Frequence.Description}" DisplayMemberBinding="{Binding NbPaiement}"/>
+                                <GridViewColumn x:Name="columnPaiement" Header="Paiement" DisplayMemberBinding="{Binding Paiement, StringFormat={}{0:C}}"/>
+                                <GridViewColumn x:Name="columnCapital" Header="Capital" DisplayMemberBinding="{Binding Capital, StringFormat={}{0:C}}"/>
+                                <GridViewColumn x:Name="columnInteret" Header="Intérêt" DisplayMemberBinding="{Binding Interet, StringFormat={}{0:C}}"/>
+                                <GridViewColumn x:Name="columnBalance" Header="Balance" DisplayMemberBinding="{Binding Balance, StringFormat={}{0:C}}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
