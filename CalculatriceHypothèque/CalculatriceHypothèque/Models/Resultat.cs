@@ -9,8 +9,8 @@ namespace CalculatriceHypothèque.Models
     public class Resultat
     {
 
-        public static int? TotalPaiement { get; set; }
-        public int? NbPaiement { get; set; }
+        public static int? NbMois { get; set; }
+        public int? Mois { get; set; }
         public double? Paiement { get; set; }
         public double? Capital { get; set; }
         public double? Interet { get; set; }
@@ -21,8 +21,8 @@ namespace CalculatriceHypothèque.Models
 
         public Resultat(double? paiement, double? capital, double? interet)
         {
-            TotalPaiement++;
-            NbPaiement = TotalPaiement;
+            NbMois++;
+            Mois = NbMois;
             Paiement = paiement;
             Capital = capital;
             Interet = interet;

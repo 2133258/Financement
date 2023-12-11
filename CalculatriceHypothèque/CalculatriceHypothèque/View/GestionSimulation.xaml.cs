@@ -26,14 +26,12 @@ namespace CalculatriceHypothèque.View
     public partial class GestionSimulation : Window
     {
         private bool verifChangeRadioButton { get; set; }
-        private bool verifWindowSize { get; set; }
 
         public GestionSimulation()
         {
             InitializeComponent();
             this.DataContext = new VMGestionSimulation();
-            verifChangeRadioButton = false;
-            verifWindowSize = true;
+            verifChangeRadioButton = true;
 
             NomTextbox.IsEnabled = false;
             PrenomTextbox.IsEnabled = false;
@@ -46,28 +44,6 @@ namespace CalculatriceHypothèque.View
             MoisRadioButton.IsChecked = false;
             AnneeRadioButton.IsEnabled = false;
             MoisRadioButton.IsEnabled = false;
-
-            Closing += ((VMGestionSimulation)DataContext).OnWindowClosing;
-
-        }
-
-  
-
-        private void ContentGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var viewModel = (VMGestionSimulation)DataContext;
-            if (verifWindowSize && viewModel.ContentWidth != e.NewSize.Width + 13)
-            {
-                double widthWindow = e.NewSize.Width;
-                widthWindow += 15;
-                viewModel.ContentWidth = widthWindow;
-                verifWindowSize = false;
-            }
-            else
-            {
-                verifWindowSize = true;
-            }
-            
         }
 
         #region Commande SortItem
@@ -269,7 +245,6 @@ namespace CalculatriceHypothèque.View
                 AnneeRadioButton.IsChecked = true;
                 verifChangeRadioButton = false;
                 MoisRadioButton.IsChecked = true;
-                verifWindowSize = true;
             }
             else
             {

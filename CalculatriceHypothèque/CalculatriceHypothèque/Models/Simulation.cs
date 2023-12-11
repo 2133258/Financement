@@ -47,8 +47,8 @@ namespace CalculatriceHypothèque.Models
             SetMensualite();
             Resultats.Clear();
             Resultat.TrackBalance = Capital;
-            Resultat.TotalPaiement = 0;
-            for (int i = 1; i <= GetNbPaiementTotal(); i++)
+            Resultat.NbMois = 0;
+            for (int i = 1; i <= Periode; i++)
             {
                 Resultats.Add(new Resultat(Mensualite, GetCapitalMensuelle(), GetMontantInteretMensuelle()));
             }
