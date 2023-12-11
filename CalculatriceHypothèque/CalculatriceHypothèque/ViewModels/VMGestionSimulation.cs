@@ -348,7 +348,8 @@ namespace CalculatriceHypothèque.ViewModels
             this._AjouterSimulation = new CommandeRelais(AjouterSimulation_Execute, AjouterSimulation_CanExecute);
             this._SupprimerSimulation = new CommandeRelais(SupprimerSimulation_Execute, SupprimerSimulation_CanExecute);
             this._EnregistrerSimulation = new CommandeRelais(EnregistrerSimulation_Execute, EnregistrerSimulation_CanExecute);
-            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute);
+            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute); 
+            this._UpdateCommand = new CommandeRelais(UpdateCommand_Execute, UpdateCommand_CanExecute);
         }
 
         #region FonctionAide
@@ -462,25 +463,21 @@ namespace CalculatriceHypothèque.ViewModels
             }
         }
 
-        private ICommand _Updatemmand;
-        public ICommand Updatemmand
+        private ICommand _UpdateCommand;
+        public ICommand UpdateCommand
         {
-            get { return _Updatemmand; }
-            private set { _Updatemmand = value; }
+            get { return _UpdateCommand; }
+            private set { _UpdateCommand = value; }
         }
 
-        private async void Updatemmand_Execute(object parSelect)
+        private void UpdateCommand_Execute(object parSelect)
         {
-            await CheckForUpdates();
+            CheckForUpdates();
         }
 
-        private bool Updatemmand_CanExecute(object param)
+        private bool UpdateCommand_CanExecute(object param)
         {
-            if (IsUpdateAvailable)
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         #endregion

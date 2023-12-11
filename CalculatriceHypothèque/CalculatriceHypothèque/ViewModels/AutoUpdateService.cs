@@ -11,13 +11,14 @@ using Newtonsoft.Json;
 
 public class AutoUpdateService
 {
-    private readonly string _githubApiReleaseUrl = "https://api.github.com/repos/{username}/{repo}/releases/latest";
+    private readonly string _githubApiReleaseUrl = "https://api.github.com/repos/2133258/Financement/releases/latest";
 
     public async Task<ReleaseInfo> CheckForUpdatesAsync()
     {
         using (var client = new HttpClient())
         {
             client.DefaultRequestHeaders.Add("User-Agent", "request"); // GitHub API requires a User-Agent header
+            client.DefaultRequestHeaders.Add("Authorization", "token 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");
             var response = await client.GetStringAsync(_githubApiReleaseUrl);
             var releaseInfo = JsonConvert.DeserializeObject<ReleaseInfo>(response);
 

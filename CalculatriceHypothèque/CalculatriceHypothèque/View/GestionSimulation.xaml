@@ -15,7 +15,10 @@
             <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <GroupBox Header="Simulations" Grid.Column="0" Background="White" BorderBrush="Gray" Margin="5,5,5,10">
             <Grid>
                 <Grid.RowDefinitions>
@@ -442,5 +445,6 @@
                 </ListView>
             </Grid>
         </GroupBox>
+        <Button Grid.Row="1" Grid.ColumnSpan="3" Margin="25,5" Padding="10" Command="{Binding UpdateCommand}"> Verifier les mise a jour de l'application</Button>
     </Grid>
 </Window>
