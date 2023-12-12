@@ -37,7 +37,7 @@ public class AutoUpdateService
         return Version.Parse(latestVersion) > Version.Parse(currentVersion);
     }
 
-    private string GetCurrentVersion()
+    public string GetCurrentVersion()
     {
         // Assuming the version is stored in Assembly Information
         return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();

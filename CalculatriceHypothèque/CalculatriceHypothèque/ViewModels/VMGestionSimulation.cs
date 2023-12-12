@@ -337,6 +337,9 @@ namespace CalculatriceHypothèque.ViewModels
 
         public VMGestionSimulation()
         {
+            _autoUpdateService = new AutoUpdateService();
+            _currentVersion = "(v" + _autoUpdateService.GetCurrentVersion() + ")";
+            _currentVersionTitle = "Calculatrice hypothecaire " + _currentVersion;
             _listeSimulation = new List<Simulation>();
             _listeFrequence = new List<Frequence>();
             _resultats = new List<Resultat>();
@@ -424,9 +427,23 @@ namespace CalculatriceHypothèque.ViewModels
 
         #region Auto-Update Implementation
 
-        private AutoUpdateService _autoUpdateService = new AutoUpdateService();
+        private AutoUpdateService _autoUpdateService;
         private string _updateMessage;
+        private string _currentVersion;
+        private string _currentVersionTitle;
         private bool _isUpdateAvailable;
+
+        public string CurrentVersion
+        {
+            get { return _currentVersion; }
+            set { _currentVersion = value; ValeurChangee(nameof(CurrentVersion)); }
+        }
+
+        public string CurrentVersionTitle
+        {
+            get { return _currentVersionTitle; }
+            set { _currentVersionTitle = value; ValeurChangee(nameof(CurrentVersionTitle)); }
+        }
 
         public string UpdateMessage
         {
@@ -448,17 +465,17 @@ namespace CalculatriceHypothèque.ViewModels
                 if (updateInfo != null)
                 {
                     IsUpdateAvailable = true;
-                    UpdateMessage = $"Update available: {updateInfo.TagName}";
+                    UpdateMessage = $"Mise a jour disponible: {updateInfo.TagName} " + _currentVersion;
                     // Optionally prompt the user to download the update
                 }
                 else
                 {
-                    UpdateMessage = "Your application is up to date.";
+                    UpdateMessage = "Votre application est a jour " + _currentVersion;
                 }
             }
             catch (Exception ex)
             {
-                UpdateMessage = "Error checking for updates.";
+                UpdateMessage = "Erreur lors de la verification de mise a jour.";
                 // Log the exception as needed
             }
         }
