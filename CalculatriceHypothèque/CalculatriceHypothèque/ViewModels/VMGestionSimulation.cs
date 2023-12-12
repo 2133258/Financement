@@ -337,9 +337,6 @@ namespace CalculatriceHypothèque.ViewModels
 
         public VMGestionSimulation()
         {
-            _autoUpdateService = new AutoUpdateService();
-            _currentVersion = "(v" + _autoUpdateService.GetCurrentVersion() + ")";
-            _currentVersionTitle = "Calculatrice hypothecaire " + _currentVersion;
             _listeSimulation = new List<Simulation>();
             _listeFrequence = new List<Frequence>();
             _resultats = new List<Resultat>();
@@ -351,8 +348,8 @@ namespace CalculatriceHypothèque.ViewModels
             this._AjouterSimulation = new CommandeRelais(AjouterSimulation_Execute, AjouterSimulation_CanExecute);
             this._SupprimerSimulation = new CommandeRelais(SupprimerSimulation_Execute, SupprimerSimulation_CanExecute);
             this._EnregistrerSimulation = new CommandeRelais(EnregistrerSimulation_Execute, EnregistrerSimulation_CanExecute);
-            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute); 
-            this._UpdateCommand = new CommandeRelais(UpdateCommand_Execute, UpdateCommand_CanExecute);
+            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute);
+            this._CheckUpdateCommand = new CommandeRelais(CheckUpdateCommand_Execute, CheckUpdateCommand_CanExecute);
         }
 
         #region FonctionAide
@@ -427,23 +424,9 @@ namespace CalculatriceHypothèque.ViewModels
 
         #region Auto-Update Implementation
 
-        private AutoUpdateService _autoUpdateService;
+        private AutoUpdateService _autoUpdateService = new AutoUpdateService();
         private string _updateMessage;
-        private string _currentVersion;
-        private string _currentVersionTitle;
         private bool _isUpdateAvailable;
-
-        public string CurrentVersion
-        {
-            get { return _currentVersion; }
-            set { _currentVersion = value; ValeurChangee(nameof(CurrentVersion)); }
-        }
-
-        public string CurrentVersionTitle
-        {
-            get { return _currentVersionTitle; }
-            set { _currentVersionTitle = value; ValeurChangee(nameof(CurrentVersionTitle)); }
-        }
 
         public string UpdateMessage
         {
@@ -465,34 +448,36 @@ namespace CalculatriceHypothèque.ViewModels
                 if (updateInfo != null)
                 {
                     IsUpdateAvailable = true;
-                    UpdateMessage = $"Mise a jour disponible: {updateInfo.TagName} ";
+                    UpdateMessage = $"Update available: {updateInfo.TagName}";
                     // Optionally prompt the user to download the update
+                    _autoUpdateService.DownloadAndUpdate(updateInfo);
                 }
                 else
                 {
-                    UpdateMessage = "Votre application est a jour " + _currentVersion;
+                    UpdateMessage = "Your application is up to date.";
                 }
             }
             catch (Exception ex)
             {
-                UpdateMessage = "Erreur lors de la verification de mise a jour.";
+                UpdateMessage = "Error checking for updates.";
                 // Log the exception as needed
             }
         }
 
-        private ICommand _UpdateCommand;
-        public ICommand UpdateCommand
+
+        private ICommand _CheckUpdateCommand;
+        public ICommand CheckUpdateCommand
         {
-            get { return _UpdateCommand; }
-            private set { _UpdateCommand = value; }
+            get { return _CheckUpdateCommand; }
+            private set { _CheckUpdateCommand = value; }
         }
 
-        private void UpdateCommand_Execute(object parSelect)
+        private void CheckUpdateCommand_Execute(object parSelect)
         {
             CheckForUpdates();
         }
 
-        private bool UpdateCommand_CanExecute(object param)
+        private bool CheckUpdateCommand_CanExecute(object param)
         {
             return true;
         }

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\app.ico" />
     <None Remove="View\Img\Thumbs.db" />
     <None Remove="View\Moins.png" />
     <None Remove="View\Plus.png" />
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\app.ico" />
     <Resource Include="View\Moins.png" />
     <Resource Include="View\Plus.png" />
   </ItemGroup>

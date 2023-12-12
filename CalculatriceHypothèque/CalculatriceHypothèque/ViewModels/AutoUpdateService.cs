@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
@@ -18,7 +19,6 @@ public class AutoUpdateService
         using (var client = new HttpClient())
         {
             client.DefaultRequestHeaders.Add("User-Agent", "request"); // GitHub API requires a User-Agent header
-            client.DefaultRequestHeaders.Add("Authorization", "token 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");
             var response = await client.GetStringAsync(_githubApiReleaseUrl);
             var releaseInfo = JsonConvert.DeserializeObject<ReleaseInfo>(response);
 
@@ -37,7 +37,7 @@ public class AutoUpdateService
         return Version.Parse(latestVersion) > Version.Parse(currentVersion);
     }
 
-    public string GetCurrentVersion()
+    private string GetCurrentVersion()
     {
         // Assuming the version is stored in Assembly Information
         return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -46,25 +46,36 @@ public class AutoUpdateService
 
     public async void DownloadAndUpdate(ReleaseInfo releaseInfo)
     {
-        var client = new WebClient();
-
-        // Assuming the installer URL is in the releaseInfo object
         string downloadUrl = releaseInfo.InstallerUrl;
-        string localPath = Path.Combine(Path.GetTempPath(), "update_installer.exe");
+        string localPath = Path.Combine(Path.GetTempPath(), "mysetup.exe");
 
-        try
+        using (var client = new HttpClient())
         {
-            await client.DownloadFileTaskAsync(new Uri(downloadUrl), localPath);
+            // Set up HttpClient with the personal access token for authentication
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("YourAppName", "1.0"));
 
-            // Execute the installer
-            Process.Start(localPath);
+            try
+            {
+                // Get the installer as a stream
+                var response = await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
 
-            // Optionally, close the current application
-            Application.Current.Shutdown();
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (e.g., log the error or notify the user)
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                using (var fileStream = new FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+                // Execute the installer
+                Process.Start(localPath);
+
+                // Optionally, close the current application
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., log the error or notify the user)
+            }
         }
     }
 
