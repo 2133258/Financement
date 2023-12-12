@@ -465,18 +465,18 @@ namespace CalculatriceHypothèque.ViewModels
                 if (updateInfo != null)
                 {
                     IsUpdateAvailable = true;
-                    UpdateMessage = $"Update available: {updateInfo.TagName}";
+                    UpdateMessage = $"Mise a jour disponible : {updateInfo.TagName}";
                     // Optionally prompt the user to download the update
                     _autoUpdateService.DownloadAndUpdate(updateInfo);
                 }
                 else
                 {
-                    UpdateMessage = "Your application is up to date.";
+                    UpdateMessage = "Votre application est mise a jour" + _currentVersion;
                 }
             }
             catch (Exception ex)
             {
-                UpdateMessage = "Error checking for updates.";
+                UpdateMessage = "Erreur lors de la verification fde mise a jour.";
                 // Log the exception as needed
             }
         }
