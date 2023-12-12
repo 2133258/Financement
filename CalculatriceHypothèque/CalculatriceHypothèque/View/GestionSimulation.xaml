@@ -8,12 +8,12 @@
         xmlns:viewmodels="clr-namespace:CalculatriceHypothèque.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:VMGestionSimulation}"
         mc:Ignorable="d" Icon="/View/app.ico"
-        Title="GestionSimulation" Height="auto" Width="auto" FontWeight="Bold" FontSize="14">
+        Title="{Binding CurrentVersionTitle}" Height="auto" Width="auto" FontWeight="Bold" FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="400"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -26,7 +26,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ListView x:Name="ListViewSimulation" ItemsSource="{Binding ListeSimulation, NotifyOnTargetUpdated=True}" TargetUpdated="ListViewTargetUpdated" SelectedItem="{Binding SimulationSelectionner, Mode=TwoWay}"  GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" Margin="5" Background="Transparent" BorderThickness="0" SelectionChanged="ListViewSimulation_SelectionChanged">
+                <ListView x:Name="ListViewSimulation" ItemsSource="{Binding ListeSimulation, NotifyOnTargetUpdated=True}" TargetUpdated="ListViewTargetUpdated" Style="{StaticResource ListView}" SelectedItem="{Binding SimulationSelectionner, Mode=TwoWay}"  GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" Margin="5" Background="Transparent" BorderThickness="0" SelectionChanged="ListViewSimulation_SelectionChanged">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Style.Triggers>
@@ -183,53 +183,53 @@
                     </ListBox.ItemContainerStyle>
                     <!--End Source : https://stackoverflow.com/questions/15632493/wpf-listbox-turn-off-hover-effect -->
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="0" Margin="10,15" Height="25">
+                        <Grid Grid.Row="0" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Nom :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <TextBox x:Name="NomTextbox" Text="{Binding Nom, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBox>
+                            <TextBlock Text="Nom :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <TextBox x:Name="NomTextbox" Text="{Binding Nom, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextBoxStyle}"></TextBox>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="1" Margin="10,15" Height="25">
+                        <Grid Grid.Row="1" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Prénom :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <TextBox x:Name="PrenomTextbox" Text="{Binding Prenom, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBox>
+                            <TextBlock Text="Prénom :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <TextBox x:Name="PrenomTextbox" Text="{Binding Prenom, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextBoxStyle}"></TextBox>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="2" Margin="10,15" Height="25">
+                        <Grid Grid.Row="2" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Description :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <TextBox x:Name="DescriptionTextbox" Text="{Binding Description, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBox>
+                            <TextBlock Text="Description :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <TextBox x:Name="DescriptionTextbox" Text="{Binding Description, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextBoxStyle}"></TextBox>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="3" Margin="10,15" Height="25">
+                        <Grid Grid.Row="3" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Montant à financer :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <TextBox x:Name="CapitalTextBox" Text="{Binding MontantCapital, Mode=TwoWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBox>
+                            <TextBlock Text="Montant à financer :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <TextBox x:Name="CapitalTextBox" Text="{Binding MontantCapital, Mode=TwoWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextBoxStyle}"></TextBox>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="4" Margin="10,15" Height="25">
+                        <Grid Grid.Row="4" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Taux d'intérêt annuel :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <TextBox x:Name="TauxAnnuelTextbox" Text="{Binding TauxAnnuel, Mode=TwoWay, StringFormat={}{0:#.##}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBox>
+                            <TextBlock Text="Taux d'intérêt annuel :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <TextBox x:Name="TauxAnnuelTextbox" Text="{Binding TauxAnnuel, Mode=TwoWay, StringFormat={}{0:#.##}}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextBoxStyle}"></TextBox>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
@@ -238,13 +238,13 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Période :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
+                            <TextBlock Text="Période :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
                             <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Height="40">
+                                <Grid Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
@@ -252,18 +252,18 @@
                                     <RadioButton x:Name="MoisRadioButton" Grid.Row="0" GroupName="periode" Content="Mois" IsChecked="{Binding MoisRadioButtonState, Mode=TwoWay}" Checked="MoisRadioButton_Checked"/>
                                     <RadioButton x:Name="AnneeRadioButton" Grid.Row="1" GroupName="periode" Content="Annee" IsChecked="{Binding AnneeRadioButtonState, Mode=TwoWay}" Checked="AnneeRadioButton_Checked"></RadioButton>
                                 </Grid>
-                                <TextBox x:Name="PeriodeTextBox" Text="{Binding Periode, Mode=TwoWay, StringFormat={}{0}}" Grid.Column="1" Padding="5,2" Margin="10,0" Height="25" PreviewTextInput="TextBoxPeriode_NumberOnly"></TextBox>
+                                <TextBox x:Name="PeriodeTextBox" Text="{Binding Periode, Mode=TwoWay, StringFormat={}{0}}" Grid.Column="1" Padding="5,2" Margin="10,0" VerticalAlignment="Center" PreviewTextInput="TextBoxPeriode_NumberOnly" Style="{StaticResource TextBoxStyle}"></TextBox>
                             </Grid>
                         </Grid>
                     </ListBoxItem>
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Row="6" Margin="10,15" Height="25" MinHeight="25">
+                        <Grid Grid.Row="6" Margin="10,15" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Fréquence :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                            <ComboBox x:Name="FrequenceComboBox"  ItemsSource="{Binding ListeFrequence}" SelectedItem="{Binding Frequence, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0">
+                            <TextBlock Text="Fréquence :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                            <ComboBox x:Name="FrequenceComboBox"  ItemsSource="{Binding ListeFrequence}" SelectedItem="{Binding Frequence, Mode=TwoWay}" Grid.Column="1" Padding="5,2" Margin="10,0"  Style="{StaticResource ComboBoxStyle}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Description}"></TextBlock>
@@ -278,75 +278,9 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Command="{Binding CalculerSimulation}">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="5"/>
-                            </Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="#FFFFBA80"/>
-                                <Setter Property="BorderThickness" Value="3"/>
-                                <Setter Property="Content" Value="Calculer"/>
-                                <Setter Property="Margin" Value="5"/>
-                                <Setter Property="Height" Value="50"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Name="Border" BorderThickness="3" Padding="4,2"  CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="Orange">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                    <Setter TargetName="Border" Property="BorderBrush" Value="white" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.Setters>
-                                        </Trigger.Setters>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Resources>
+                    <Button Grid.Column="0" Command="{Binding CalculerSimulation}"  Style="{StaticResource ButtonStyleTerminer}" Content="Calculer">
                     </Button>
-                    <Button Grid.Column="1" Command="{Binding EnregistrerSimulation}">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="5"/>
-                            </Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="#FF7ED17E"/>
-                                <Setter Property="BorderThickness" Value="3"/>
-                                <Setter Property="Content" Value="Enregitrer"/>
-                                <Setter Property="Margin" Value="5"/>
-                                <Setter Property="Height" Value="50"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Name="Border" BorderThickness="3" Padding="4,2" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="#FF00AF00">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                    <Setter TargetName="Border" Property="BorderBrush" Value="white" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.Setters>
-                                        </Trigger.Setters>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Resources>
+                    <Button Grid.Column="1" Command="{Binding EnregistrerSimulation}" Style="{StaticResource ButtonStyleAjout}" Content="Enregistrer">
                     </Button>
                 </Grid>
             </Grid>
@@ -365,90 +299,113 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Total Capital :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                    <TextBlock Text="{Binding TotalCapital, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                    <TextBlock Text="Total Capital :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                    <TextBlock Text="{Binding TotalCapital, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
                 </Grid>
                 <Grid Grid.Row="2" Margin="10,15" Height="25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Total Intérêt :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                    <TextBlock Text="{Binding TotalInteret, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                    <TextBlock Text="Total Intérêt :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                    <TextBlock Text="{Binding TotalInteret, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
                 </Grid>
                 <Grid Grid.Row="3" Margin="10,15" Height="25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Coût Total :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"></TextBlock>
-                    <TextBlock Text="{Binding MontantTotal, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0"></TextBlock>
+                    <TextBlock Text="Coût Total :" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
+                    <TextBlock Text="{Binding MontantTotal, Mode=OneWay, StringFormat={}{0:C}}" Grid.Column="1" Padding="5,2" Margin="10,0" Style="{StaticResource TextMenu}"></TextBlock>
                 </Grid>
-                <ListView x:Name="ListViewResultat" ItemsSource="{Binding Resultats,NotifyOnTargetUpdated=True}" TargetUpdated="ListViewTargetUpdated" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" Grid.Row="4" Margin="5" Background="Transparent" BorderThickness="2">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="BorderBrush" Value="Gray" />
-                                    <Setter Property="Background" Value="White" />
-                                    <Setter Property="Margin" Value="5,2"/>
-                                    <Setter Property="Cursor" Value="Hand"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="BorderBrush" Value="Gray" />
-                                    <Setter Property="Background" Value="LightGreen" />
-                                    <Setter Property="Margin" Value="5,2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="Background" Value="White" />
-                            <Setter Property="BorderBrush" Value="LightGray" />
-                            <Setter Property="BorderThickness" Value="1" />
-                            <Setter Property="Margin" Value="5,2"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.View>
-                        <GridView>
-                            <GridView.ColumnHeaderContainerStyle>
-                                <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                    <Setter Property="Margin" Value="2"/>
-                                    <Setter Property="Padding" Value="3"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                                <Grid>
-                                                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                                                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <Border Grid.Row="4" BorderThickness="2,2,2,2" BorderBrush="LightGray" Padding="0,0,0,20" CornerRadius="10" Margin="10" Background="Transparent" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Mois" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="0,0,1,2" FontWeight="Bold"></Label>
+                            <Label Grid.Column="1" Content="Paimement" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="0,0,0,2" FontWeight="Bold"></Label>
+                            <Label Grid.Column="2" Content="Capital" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Bold"></Label>
+                            <Label Grid.Column="3" Content="Interet" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Bold"></Label>
+                            <Label Grid.Column="4" Content="Balance" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Bold"></Label>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <ListView x:Name="ListViewResultat" ItemsSource="{Binding Resultats,NotifyOnTargetUpdated=True}" TargetUpdated="ListViewTargetUpdated" Style="{StaticResource ListView}" Margin="-1">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Margin" Value="0,5"></Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListViewItem">
+                                                    <Border Background="Transparent">
+                                                        <ContentPresenter />
                                                     </Border>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn x:Name="columnMois" Header="Mois" DisplayMemberBinding="{Binding Mois}"/>
-                            <GridViewColumn x:Name="columnPaiement" Header="Paiement" DisplayMemberBinding="{Binding Paiement, StringFormat={}{0:C}}"/>
-                            <GridViewColumn x:Name="columnCapital" Header="Capital" DisplayMemberBinding="{Binding Capital, StringFormat={}{0:C}}"/>
-                            <GridViewColumn x:Name="columnInteret" Header="Intérêt" DisplayMemberBinding="{Binding Interet, StringFormat={}{0:C}}"/>
-                            <GridViewColumn x:Name="columnBalance" Header="Balance" DisplayMemberBinding="{Binding Balance, StringFormat={}{0:C}}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Setter Property="Margin" Value="-3,5"></Setter>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListViewItem">
+                                                            <Border Background="#e3e3e3">
+                                                                <ContentPresenter />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListViewItem">
+                                                            <Border Background="#e8e8e8">
+                                                                <ContentPresenter />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,-5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="{Binding Mois}" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="0,0,1,2" FontWeight="Normal"></Label>
+                                            <Label Grid.Column="1" Content="{Binding Paiement, StringFormat={}{0:C}}" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="0,0,0,2" FontWeight="Normal"></Label>
+                                            <Label Grid.Column="2" Content="{Binding Capital, StringFormat={}{0:C}}" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Normal"></Label>
+                                            <Label Grid.Column="3" Content="{Binding Interet, StringFormat={}{0:C}}" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Normal"></Label>
+                                            <Label Grid.Column="4" Content="{Binding Balance, StringFormat={}{0:C}}" HorizontalContentAlignment="Center" BorderBrush="LightGray" BorderThickness="1,0,0,2" FontWeight="Normal"></Label>
+                                            
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </Border>
             </Grid>
         </GroupBox>
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
-            <TextBlock  Margin="25,5" Padding="0" HorizontalAlignment="Center" Text="{Binding UpdateMessage}"></TextBlock>
-        </Grid>
-        <Button Grid.Row="2" Grid.ColumnSpan="3" Margin="25,5" Padding="10" Command="{Binding CheckUpdateCommand}">Verifier les mise a jour de l'application</Button>
+        <Button Grid.Row="2" Grid.ColumnSpan="3" Margin="25,5" Padding="10" Command="{Binding CheckUpdateCommand}" Style="{StaticResource ButtonStyleAjout}"> Verifier les mise a jour de l'application</Button>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="25,5" Padding="0" HorizontalAlignment="Center" Text="{Binding UpdateMessage}" Style="{StaticResource TextMenu}"></TextBlock>
     </Grid>
 </Window>

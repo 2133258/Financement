@@ -337,6 +337,9 @@ namespace CalculatriceHypothèque.ViewModels
 
         public VMGestionSimulation()
         {
+            _autoUpdateService = new AutoUpdateService();
+            _currentVersion = "(v" + _autoUpdateService.GetCurrentVersion() + ")";
+            _currentVersionTitle = "Calculatrice hypothecaire " + _currentVersion;
             _listeSimulation = new List<Simulation>();
             _listeFrequence = new List<Frequence>();
             _resultats = new List<Resultat>();
@@ -348,7 +351,7 @@ namespace CalculatriceHypothèque.ViewModels
             this._AjouterSimulation = new CommandeRelais(AjouterSimulation_Execute, AjouterSimulation_CanExecute);
             this._SupprimerSimulation = new CommandeRelais(SupprimerSimulation_Execute, SupprimerSimulation_CanExecute);
             this._EnregistrerSimulation = new CommandeRelais(EnregistrerSimulation_Execute, EnregistrerSimulation_CanExecute);
-            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute);
+            this._CalculerSimulation = new CommandeRelais(CalculerSimulation_Execute, CalculerSimulation_CanExecute); 
             this._CheckUpdateCommand = new CommandeRelais(CheckUpdateCommand_Execute, CheckUpdateCommand_CanExecute);
         }
 
@@ -424,9 +427,23 @@ namespace CalculatriceHypothèque.ViewModels
 
         #region Auto-Update Implementation
 
-        private AutoUpdateService _autoUpdateService = new AutoUpdateService();
+        private AutoUpdateService _autoUpdateService;
         private string _updateMessage;
+        private string _currentVersion;
+        private string _currentVersionTitle;
         private bool _isUpdateAvailable;
+
+        public string CurrentVersion
+        {
+            get { return _currentVersion; }
+            set { _currentVersion = value; ValeurChangee(nameof(CurrentVersion)); }
+        }
+
+        public string CurrentVersionTitle
+        {
+            get { return _currentVersionTitle; }
+            set { _currentVersionTitle = value; ValeurChangee(nameof(CurrentVersionTitle)); }
+        }
 
         public string UpdateMessage
         {
