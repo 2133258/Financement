@@ -471,7 +471,7 @@ namespace CalculatriceHypothèque.ViewModels
                 }
                 else
                 {
-                    UpdateMessage = "Votre application est mise a jour" + _currentVersion;
+                    UpdateMessage = "Votre application est mise a jour " + _currentVersion;
                 }
             }
             catch (Exception ex)
