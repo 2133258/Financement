@@ -465,7 +465,7 @@ namespace CalculatriceHypothèque.ViewModels
                 if (updateInfo != null)
                 {
                     IsUpdateAvailable = true;
-                    UpdateMessage = $"Mise a jour disponible: {updateInfo.TagName} " + _currentVersion;
+                    UpdateMessage = $"Mise a jour disponible: {updateInfo.TagName} ";
                     // Optionally prompt the user to download the update
                 }
                 else
